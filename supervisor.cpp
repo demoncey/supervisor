@@ -11,12 +11,12 @@ Supervisor::Supervisor(String name)
 
 
 void Supervisor::addTask(Task& task){
-	is_com("addTask");
 	if(task.getSupervisor()==this){
-		is_com("Supervisor: trying to add same task again, interuppted");
+		is_com(this->name+": trying to add same task again, interuppted");
 		return;
 	}
 	if( first==NULL){
+		is_com(this->name+": task first is null");
 		first=&task;
 		task.before=NULL;
 	}else{
@@ -26,21 +26,23 @@ void Supervisor::addTask(Task& task){
 	task.setSupervisor(this);
 	task.after=NULL;
 	last=&task;
+	is_com(this->name+": task "+String(task.ptr_value,HEX)+" added");
 }
 
 
 void Supervisor::deleteTask(Task& task){
-	is_com("Supervisor:task "+String(task.ptr_value,HEX)+" removed");
 	if(&task==first){
-		task.before=NULL;
 		first=task.after;
+		task.before=NULL;
 		return;
 	}
 	if(&task==last){
-		task.before->after=NULL;
+		last=task.before;
+		last->after=NULL;
 		return;
 	}
 	task.before->after=task.after;
+	is_com(this->name+": task "+String(task.ptr_value,HEX)+" removed");
 }
 
 
@@ -49,19 +51,19 @@ void Supervisor::execute(){
 	while(current){
 		if(current->suspended == false){
 			current->execute();
-			is_com("Supervisor:task "+String(current->ptr_value,HEX)+" executed in chain");
+			is_com(this->name+": task "+String(current->ptr_value,HEX)+" executed in chain");
 			if(current->execution == MODE_ONCE){
 				delete(current);
-				is_com("Supervisor:task "+String(current->ptr_value,HEX)+" deleted");
+				is_com(this->name+": task "+String(current->ptr_value,HEX)+" deleted");
 			}	
 		}else{
-			is_com("Supervisor:task "+String(current->ptr_value,HEX)+" is suspend omitting execute");
+			is_com(this->name+": task "+String(current->ptr_value,HEX)+" is suspend omitting execute");
 		}
 
 		current=current->after;
 		delay(300);
 	}
-	is_com("Supervisor:Cycle finished, reseting");
+	is_com(this->name+": Cycle finished, reseting");
 }
 
 
@@ -74,7 +76,7 @@ void Supervisor::suspendAll(){
 		}
 		current=current->after;
 	}
-	is_com("Supervisor:suspendAll finished");
+	is_com(this->name+": suspendAll finished");
 }
 
 
@@ -86,7 +88,7 @@ void Supervisor::resumeAll(){
 		}
 		current=current->after;
 	}
-	is_com("Supervisor:resumedAll finished");
+	is_com(this->name+": resumedAll finished");
 	
 }
 
