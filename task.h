@@ -44,4 +44,45 @@ class Task
 		uint16_t ptr_value;
 	
 };
+
+
+class TaskBuilder{
+	
+	public:
+		TaskBuilder(){
+			priority=P_LOW;
+			execution=MODE_ONCE;
+		};	
+		TaskBuilder& setCallback(Callback callback){
+			this->callback=callback;
+			return *this;
+		}
+		TaskBuilder& setPriority(uint8_t priority){
+			this->priority=priority;
+			return *this;
+		}
+	
+		TaskBuilder& setMode(uint8_t execution){
+			this->execution=execution;
+			return *this;
+		}
+		Task* build(){
+			//task is created out of scope so it is persistent
+			this->task=new Task(this->callback);
+			this->task->setMode(this->execution);
+			this->task->setPriority(this->priority);
+			return task;
+		}
+		void reset(){
+			task=NULL;
+		}
+	private:
+		Task *task;
+		uint8_t execution;
+		uint8_t priority;
+		Callback callback;
+};
+
+
+
 #endif
