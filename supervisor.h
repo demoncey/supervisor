@@ -8,6 +8,7 @@ class Supervisor
 	public:
 		Supervisor(String name);
 		void addTask(Task& task);
+		void addTask(Task* task);
 		void deleteTask(Task& task);
 		void execute();
 		void suspendAll();

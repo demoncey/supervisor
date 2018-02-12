@@ -29,6 +29,11 @@ void Supervisor::addTask(Task& task){
 	is_com(this->name+": task "+String(task.ptr_value,HEX)+" added");
 }
 
+void Supervisor::addTask(Task* task){
+	is_com(this->name+": task "+String(task->ptr_value,HEX)+" will be added by *");
+	this->addTask(*task);
+}
+
 
 void Supervisor::deleteTask(Task& task){
 	if(&task==first){
