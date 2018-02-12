@@ -31,5 +31,11 @@ void Task::execute(){
 }
 
 
+Task * Task::setPriority(uint8_t priority){
+	this->priority=priority;
+	return this;
+};
+
+
 
 

@@ -28,7 +28,7 @@ class Task
 		bool isRunning(){return !suspended;};
 		void suspend(){this->suspended=true;};
 		void resume(){this->suspended=false;};
-		void setPriority(uint8_t priority){this->priority=priority;};
+		Task* setPriority(uint8_t priority);
 		void kill(){};
 		void setSupervisor(Supervisor *supervisor){this->supervisor=supervisor;};
 		void setMode(uint8_t execution){this->execution=execution;};
