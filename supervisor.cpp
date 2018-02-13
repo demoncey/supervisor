@@ -53,6 +53,8 @@ void Supervisor::deleteTask(Task& task){
 
 void Supervisor::execute(){
 	Task* current=first;
+	uint8_t executed=0;
+	uint8_t killed=0;
 	while(current){
 		if(current->suspended == false){
 			current->execute();
@@ -60,15 +62,20 @@ void Supervisor::execute(){
 			if(current->execution == MODE_ONCE){
 				delete(current);
 				is_com(this->name+": task "+String(current->ptr_value,HEX)+" deleted");
-			}	
+				killed++;
+			}
+		executed++;
 		}else{
 			is_com(this->name+": task "+String(current->ptr_value,HEX)+" is suspend omitting execute");
 		}
 
 		current=current->after;
-		delay(300);
+		delay(50);
 	}
 	is_com(this->name+": Cycle finished, reseting");
+	is_com("Summary:");
+	is_com("	executed: "+String(executed));
+	is_com("	killed: "+String(killed));
 }
 
 
