@@ -72,10 +72,13 @@ void Supervisor::execute(){
 		current=current->after;
 		delay(50);
 	}
+	
 	is_com(this->name+": Cycle finished, reseting");
+	is_com("**********************");
 	is_com("Summary:");
-	is_com("	executed: "+String(executed));
-	is_com("	killed: "+String(killed));
+	is_com("	executed "+String(executed));
+	is_com("	killed "+String(killed));
+	is_com("**********************");
 }
 
 
