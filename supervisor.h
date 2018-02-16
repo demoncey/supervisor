@@ -13,6 +13,11 @@ class Supervisor
 		void execute();
 		void suspendAll();
 		void resumeAll();
+		//first arg always this hidden
+		Supervisor& operator +(Task&  task){
+			this->addTask(task);
+			return *this;
+		};
 	private:
 		String name;
 		void is_com(String msg);
