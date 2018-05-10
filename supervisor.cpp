@@ -63,8 +63,11 @@ void Supervisor::execute(){
 			is_com(this->name+": "+current->name+" "+String(current->ptr_value,HEX)+" executed in chain");
 			if(current->execution == MODE_ONCE){
 				//inside deconstructor Task pointer is removed from List
+				//really danger if object is on stack
 				is_com(this->name+": "+current->name+" "+String(current->ptr_value,HEX)+"  will be deleted");
 				delete(current);
+				//if stack use method below instead delete
+				//deleteTask(*current);
 				killed++;
 			}
 		executed++;
