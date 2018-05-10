@@ -34,6 +34,7 @@ class Task
 		void setMode(uint8_t execution){this->execution=execution;};
 		Supervisor* getSupervisor(){return supervisor;};
 		bool suspended;
+		String name;//access  directly via variable
 	private:
 		Callback task_callback;
 		

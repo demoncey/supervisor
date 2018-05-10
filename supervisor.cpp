@@ -26,11 +26,11 @@ void Supervisor::addTask(Task& task){
 	task.setSupervisor(this);
 	task.after=NULL;
 	last=&task;
-	is_com(this->name+": task "+String(task.ptr_value,HEX)+" added");
+	is_com(this->name+": "+task.name+" "+String(task.ptr_value,HEX)+" added");
 }
 
 void Supervisor::addTask(Task* task){
-	is_com(this->name+": task "+String(task->ptr_value,HEX)+" will be added by *");
+	is_com(this->name+": "+task->name+" "+String(task->ptr_value,HEX)+" will be added by *");
 	this->addTask(*task);
 }
 
@@ -47,7 +47,7 @@ void Supervisor::deleteTask(Task& task){
 		return;
 	}
 	task.before->after=task.after;
-	is_com(this->name+": task "+String(task.ptr_value,HEX)+" removed");
+	is_com(this->name+": "+task.name+" "+String(task.ptr_value,HEX)+" removed");
 }
 
 
@@ -58,7 +58,7 @@ void Supervisor::execute(){
 	while(current){
 		if(current->suspended == false){
 			current->execute();
-			is_com(this->name+": task "+String(current->ptr_value,HEX)+" executed in chain");
+			is_com(this->name+": "+current->name+" "+String(current->ptr_value,HEX)+" executed in chain");
 			if(current->execution == MODE_ONCE){
 				delete(current);
 				is_com(this->name+": task "+String(current->ptr_value,HEX)+" deleted");
