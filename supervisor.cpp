@@ -53,24 +53,26 @@ void Supervisor::deleteTask(Task& task){
 
 void Supervisor::execute(){
 	Task* current=first;
+	Task* next=NULL;
 	uint8_t executed=0;
 	uint8_t killed=0;
 	while(current){
+		next=current->after;
 		if(current->suspended == false){
 			current->execute();
 			is_com(this->name+": "+current->name+" "+String(current->ptr_value,HEX)+" executed in chain");
 			if(current->execution == MODE_ONCE){
+				//inside deconstructor Task pointer is removed from List
+				is_com(this->name+": "+current->name+" "+String(current->ptr_value,HEX)+"  will be deleted");
 				delete(current);
-				is_com(this->name+": task "+String(current->ptr_value,HEX)+" deleted");
 				killed++;
 			}
 		executed++;
 		}else{
 			is_com(this->name+": task "+String(current->ptr_value,HEX)+" is suspend omitting execute");
 		}
-
-		current=current->after;
-		delay(50);
+		current=next;
+		delay(500);
 	}
 	
 	is_com(this->name+": Cycle finished, reseting");

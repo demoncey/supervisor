@@ -53,6 +53,7 @@ class TaskBuilder{
 		TaskBuilder(){
 			priority=P_LOW;
 			execution=MODE_ONCE;
+			name="unknown";
 		};	
 		TaskBuilder& setCallback(Callback callback){
 			this->callback=callback;
@@ -67,11 +68,20 @@ class TaskBuilder{
 			this->execution=execution;
 			return *this;
 		}
+		
+		TaskBuilder& setName(String name){
+			this->name=name;
+			return *this;
+		}
+		
+		
+		
 		Task* build(){
 			//task is created out of scope so it is persistent
 			this->task=new Task(this->callback);
 			this->task->setMode(this->execution);
 			this->task->setPriority(this->priority);
+			this->task->name=this->name;
 			return task;
 		}
 		void reset(){
@@ -81,6 +91,7 @@ class TaskBuilder{
 		Task *task;
 		uint8_t execution;
 		uint8_t priority;
+		String name;
 		Callback callback;
 };
 
