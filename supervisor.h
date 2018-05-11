@@ -3,6 +3,9 @@
 #include "Arduino.h"
 #include "task.h"
 
+
+#define SERIAL_LOGGER(name, ptr,msg) (Serial)?Serial.println((name)+":"+String((ptr),HEX)+" "+(msg)):0
+#define SERIAL_LOGGER1(msg) (Serial)?Serial.println((msg)):0
 class Supervisor
 {
 	public:
@@ -24,7 +27,6 @@ class Supervisor
 		};
 	private:
 		String name;
-		void is_com(String msg);
 		//task chain
 		Task  *first,*last;	
 };

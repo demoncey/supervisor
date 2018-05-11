@@ -12,11 +12,11 @@ Supervisor::Supervisor(String name)
 
 void Supervisor::addTask(Task& task){
 	if(task.getSupervisor()==this){
-		is_com(this->name+": trying to add same task again, interuppted");
+		SERIAL_LOGGER1("trying to add same task again, interuppted");
 		return;
 	}
 	if( first==NULL){
-		is_com(this->name+": task first is null");
+		SERIAL_LOGGER1("task first is null");
 		first=&task;
 		task.before=NULL;
 	}else{
@@ -26,11 +26,10 @@ void Supervisor::addTask(Task& task){
 	task.setSupervisor(this);
 	task.after=NULL;
 	last=&task;
-	is_com(this->name+": "+task.name+" "+String(task.ptr_value,HEX)+" added");
+	SERIAL_LOGGER(task.name,task.ptr_value," added");
 }
 
 void Supervisor::addTask(Task* task){
-	is_com(this->name+": "+task->name+" "+String(task->ptr_value,HEX)+" will be added by *");
 	this->addTask(*task);
 }
 
@@ -47,7 +46,7 @@ void Supervisor::deleteTask(Task& task){
 		return;
 	}
 	task.before->after=task.after;
-	is_com(this->name+": "+task.name+" "+String(task.ptr_value,HEX)+" removed");
+	SERIAL_LOGGER(task.name,task.ptr_value," removed");
 }
 
 
@@ -60,11 +59,10 @@ void Supervisor::execute(){
 		next=current->after;
 		if(current->suspended == false){
 			current->execute();
-			is_com(this->name+": "+current->name+" "+String(current->ptr_value,HEX)+" executed in chain");
+			SERIAL_LOGGER(current->name,current->ptr_value," executed in chain");
 			if(current->execution == MODE_ONCE){
 				//inside deconstructor Task pointer is removed from List
-				//really danger if object is on stack
-				is_com(this->name+": "+current->name+" "+String(current->ptr_value,HEX)+"  will be deleted");
+				SERIAL_LOGGER(current->name,current->ptr_value," will be deleted");
 				delete(current);
 				//if stack use method below instead delete
 				//deleteTask(*current);
@@ -72,18 +70,14 @@ void Supervisor::execute(){
 			}
 		executed++;
 		}else{
-			is_com(this->name+": task "+String(current->ptr_value,HEX)+" is suspend omitting execute");
+			SERIAL_LOGGER(current->name,current->ptr_value," is suspend");
 		}
 		current=next;
 		delay(500);
 	}
-	
-	is_com(this->name+": Cycle finished, reseting");
-	is_com("**********************");
-	is_com("Summary:");
-	is_com("	executed "+String(executed));
-	is_com("	killed "+String(killed));
-	is_com("**********************");
+	SERIAL_LOGGER1("****************************");
+	SERIAL_LOGGER1("Cycle finished, reseting");
+	SERIAL_LOGGER1("****************************");
 }
 
 
@@ -96,7 +90,7 @@ void Supervisor::suspendAll(){
 		}
 		current=current->after;
 	}
-	is_com(this->name+": suspendAll finished");
+	SERIAL_LOGGER1("suspendAll finished");
 }
 
 
@@ -108,15 +102,9 @@ void Supervisor::resumeAll(){
 		}
 		current=current->after;
 	}
-	is_com(this->name+": resumedAll finished");
+	SERIAL_LOGGER1("resumedAll finished");
 	
 }
-
-
-void Supervisor::is_com(String msg){
-		if(!Serial){return;}
-		Serial.println(msg);
-	}
 
 
 
