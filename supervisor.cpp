@@ -26,7 +26,7 @@ void Supervisor::addTask(Task& task){
 	task.setSupervisor(this);
 	task.after=NULL;
 	last=&task;
-	SERIAL_LOGGER(task.name,task.ptr_value," added");
+	SERIAL_LOGGER(task.name,GET_HEX_PTR(&task)," added");
 }
 
 void Supervisor::addTask(Task* task){
@@ -46,7 +46,7 @@ void Supervisor::deleteTask(Task& task){
 		return;
 	}
 	task.before->after=task.after;
-	SERIAL_LOGGER(task.name,task.ptr_value," removed");
+	SERIAL_LOGGER(task.name,GET_HEX_PTR(&task)," removed");
 }
 
 
@@ -59,10 +59,10 @@ void Supervisor::execute(){
 		next=current->after;
 		if(current->suspended == false){
 			current->execute();
-			SERIAL_LOGGER(current->name,current->ptr_value," executed in chain");
+			SERIAL_LOGGER(current->name,GET_HEX_PTR(current)," executed in chain");
 			if(current->execution == MODE_ONCE){
 				//inside deconstructor Task pointer is removed from List
-				SERIAL_LOGGER(current->name,current->ptr_value," will be deleted");
+				SERIAL_LOGGER(current->name,GET_HEX_PTR(current)," will be deleted");
 				delete(current);
 				//if stack use method below instead delete
 				//deleteTask(*current);
@@ -70,7 +70,7 @@ void Supervisor::execute(){
 			}
 		executed++;
 		}else{
-			SERIAL_LOGGER(current->name,current->ptr_value," is suspend");
+			SERIAL_LOGGER(current->name,GET_HEX_PTR(current)," is suspend");
 		}
 		current=next;
 		delay(500);

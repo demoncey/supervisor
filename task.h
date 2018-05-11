@@ -12,6 +12,9 @@
 #define MODE_ONCE 1
 #define MODE_DEFINED 1
 
+
+
+
 class Supervisor;
 
 typedef  void (*Callback)();
@@ -42,7 +45,7 @@ class Task
 		Task *before, *after;
 		uint8_t priority;
 		uint8_t execution;
-		uint16_t ptr_value;
+		//uint16_t ptr_value;
 	
 };
 

@@ -6,6 +6,9 @@
 
 #define SERIAL_LOGGER(name, ptr,msg) (Serial)?Serial.println((name)+":"+String((ptr),HEX)+" "+(msg)):0
 #define SERIAL_LOGGER1(msg) (Serial)?Serial.println((msg)):0
+#define GET_HEX_PTR(ptr) (uint16_t)(ptr)
+
+
 class Supervisor
 {
 	public:
