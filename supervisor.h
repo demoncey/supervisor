@@ -7,7 +7,11 @@
 #define SERIAL_LOGGER(name, ptr,msg) (Serial)?Serial.println((name)+":"+String((ptr),HEX)+" "+(msg)):0
 #define SERIAL_LOGGER1(msg) (Serial)?Serial.println((msg)):0
 #define GET_HEX_PTR(ptr) (uint16_t)(ptr)
+#define ARGS void *args
 
+
+//sprintf(buffer, "Task %u flashing %u times.", taskNum, count);
+//https://stackoverflow.com/questions/20059673/print-out-value-of-stack-pointer
 
 class Supervisor
 {

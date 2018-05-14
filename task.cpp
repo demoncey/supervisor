@@ -21,7 +21,7 @@ Task::~Task(){
 };
 
 void Task::execute(){
-	task_callback();
+	task_callback(NULL);
 }
 
 
