@@ -23,9 +23,9 @@ class Task
 {
 	friend class Supervisor;//access to private Task  (before after) in Supervisor
 	public:
-		Task();
+		Task() = delete;
 		Task(Callback callback);
-		Task(Callback callback, bool suspend);
+		//Task(Callback callback, bool suspend);
 		~Task();
 		void execute();
 		bool isRunning(){
@@ -45,7 +45,9 @@ class Task
 		void setMode(uint8_t execution){
 			this->execution = execution;
 		};
-		Supervisor* getSupervisor(){return supervisor;};
+		Supervisor* getSupervisor(){
+			return supervisor;
+		};
 		bool suspended;
 		String name;//access  directly via variable
 	private:
