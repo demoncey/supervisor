@@ -17,7 +17,7 @@
 
 class Supervisor;
 
-typedef  void (*Callback)(void *args);
+using Callback = void (*)(void*);
 
 class Task
 {
