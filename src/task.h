@@ -28,13 +28,23 @@ class Task
 		Task(Callback callback, bool suspend);
 		~Task();
 		void execute();
-		bool isRunning(){return !suspended;};
-		void suspend(){this->suspended=true;};
-		void resume(){this->suspended=false;};
+		bool isRunning(){
+			return !suspended;
+		};
+		void suspend(){
+			this->suspended = true;
+		};
+		void resume(){
+			this->suspended = false;
+		};
 		Task* setPriority(uint8_t priority);
 		void kill(){};
-		void setSupervisor(Supervisor *supervisor){this->supervisor=supervisor;};
-		void setMode(uint8_t execution){this->execution=execution;};
+		void setSupervisor(Supervisor *supervisor){
+			this->supervisor = supervisor;
+		};
+		void setMode(uint8_t execution){
+			this->execution = execution;
+		};
 		Supervisor* getSupervisor(){return supervisor;};
 		bool suspended;
 		String name;//access  directly via variable
