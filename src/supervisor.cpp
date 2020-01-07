@@ -29,9 +29,9 @@ void Supervisor::addTask(Task& task){
 	SERIAL_LOGGER(task.name,GET_HEX_PTR(&task)," added");
 }
 
-void Supervisor::addTask(Task* task){
-	this->addTask(*task);
-}
+//void Supervisor::addTask(Task* task){
+//	this->addTask(*task);
+//}
 
 
 void Supervisor::deleteTask(Task& task){

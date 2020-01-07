@@ -18,7 +18,7 @@ class Supervisor
 	public:
 		Supervisor(String name);
 		void addTask(Task& task);
-		void addTask(Task* task);
+		//void addTask(Task* task);
 		void deleteTask(Task& task);
 		void execute();
 		void suspendAll();
@@ -28,10 +28,10 @@ class Supervisor
 			this->addTask(task);
 			return *this;
 		};
-		Supervisor& operator +(Task*  task){
-			this->addTask(task);
-			return *this;
-		};
+//		Supervisor& operator +(Task*  task){
+//			this->addTask(task);
+//			return *this;
+//		};
 	private:
 		String name;
 		//task chain
