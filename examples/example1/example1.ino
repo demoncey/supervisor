@@ -2,6 +2,10 @@
 #include <supervisor.h>
 
 
+Supervisor supervisor("example1 supervisor");
+
+
+
 void setup() {
   // put your setup code here, to run once:
 
