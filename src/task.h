@@ -23,7 +23,7 @@ class Task
 {
 	friend class Supervisor;//access to private Task  (before after) in Supervisor
 	public:
-		Task();
+		Task() = delete;
 		Task(Callback callback);
 		//Task(Callback callback, bool suspend);
 		~Task();
