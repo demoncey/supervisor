@@ -4,8 +4,6 @@
 void send_msg_low(void*);
 void send_msg_high(void*);
 void send_msg_once(void*);
-
-//Supervisor supervisor("example1 supervisor");
 Task task1("task1", send_msg_high);
 Task task2("task2", send_msg_high);
 Task task3("task3", send_msg_low);
@@ -15,9 +13,6 @@ void setup() {
   while (!Serial) {
     ;
   }
-  //supervisor.addTask(task1.setPriority(P_HIGH));
-  //supervisor.addTask(task2.setPriority(P_HIGH));
-  //supervisor.addTask(task3.setPriority(P_LOW));
   Supervisor::getInstance().addTask(task1.setPriority(P_HIGH));
   Supervisor::getInstance().addTask(task2.setPriority(P_HIGH));
   Supervisor::getInstance().addTask(task3.setPriority(P_LOW));
