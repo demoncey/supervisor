@@ -16,7 +16,11 @@
 class Supervisor
 {
 	public:
-		Supervisor(String name);
+	    static Supervisor& getInstance(){
+			static Supervisor instance("Supervisor Singleton"); // Guaranteed to be destroyed.
+			return instance;
+		}
+		Supervisor(const Supervisor& supervisor) = delete;
 		void addTask(Task& task);
 		void deleteTask(Task& task);
 		void execute();
@@ -28,6 +32,7 @@ class Supervisor
 			return *this;
 		};
 	private:
+	    Supervisor(String name);
 		String name;
 		//task chain
 		Task  *first,*last;	

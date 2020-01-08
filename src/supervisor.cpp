@@ -1,14 +1,13 @@
 #include "Arduino.h"
 #include "supervisor.h"
 
-
 Supervisor::Supervisor(String name)
 {
 	this->name = name;
 	first = nullptr;
 	last = nullptr;
+	SERIAL_LOGGER1("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
 }
-
 
 void Supervisor::addTask(Task& task){
 	if(task.getSupervisor() == this){
@@ -43,7 +42,6 @@ void Supervisor::deleteTask(Task& task){
 	task.before->after = task.after;
 	SERIAL_LOGGER(task.taskName,GET_HEX_PTR(&task)," removed");
 }
-
 
 void Supervisor::execute(){
 	Task* current = first;
@@ -83,7 +81,6 @@ void Supervisor::suspendAll(){
 	}
 	SERIAL_LOGGER1("suspendAll finished");
 }
-
 
 void Supervisor::resumeAll(){
 	Task *current = first;
