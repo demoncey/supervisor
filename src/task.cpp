@@ -3,14 +3,8 @@
 #include "supervisor.h"
 
 
-Task::Task(Callback callback):suspended(false),task_callback(callback),priority(P_LOW),name("unknown"),execution(0){
+Task::Task(String name,Callback callback):suspended(false),task_callback(callback),priority(P_LOW),taskName(name),execution(0){
 }
-
-//Task::Task(Callback callback,bool suspend):suspended(suspend),task_callback(callback),priority(P_LOW),name("unknown"),execution(0){
-//}
-
-//Task::Task():delete //suspended(false),priority(P_LOW),name("unknown"),execution(0){
-//}
 
 Task::~Task(){
 	this->suspend();
@@ -21,13 +15,18 @@ Task::~Task(){
 };
 
 void Task::execute(){
-	task_callback(nullptr);
+	task_callback(nullptr);//nullptr is args
 }
 
 
-Task * Task::setPriority(uint8_t priority){
+Task& Task::setPriority(uint8_t priority){
 	this->priority = priority;
-	return this;
+	return *this;
+};
+
+Task& Task::makeOnce(){
+	this->execution = 1;
+	return *this;
 };
 
 
