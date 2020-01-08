@@ -6,12 +6,9 @@
 #define P_HIGH 1
 #define P_LOW 3
 
-#define MODE_INFINITY 0
-#define MODE_ONCE 1
+//enum Priority{HIGH,LOW};
 
-
-
-
+//enum Mode{INFINITY,ONCE};
 
 class Supervisor;
 
@@ -36,24 +33,19 @@ class Task
 		};
 		Task& setPriority(uint8_t priority);
 		Task& makeOnce();
+		Task& makeSuspendtable();
 		void kill(){};
-		void setSupervisor(Supervisor &supervisor){
-			this->supervisor = &supervisor;
-		};
-		const Supervisor* getSupervisor(){
-			return supervisor;
-		};
-		void setMode(uint8_t execution){
-			this->execution = execution;
-		};
+		void setSupervisor(Supervisor &supervisor);
+		const Supervisor* getSupervisor();
 		bool suspended;
 		String taskName;//access  directly via variable
-	private:
+	private: 
 		Callback task_callback;
 		Supervisor *supervisor;
 		Task *before, *after;
 		uint8_t priority;
-		uint8_t execution;	
+		bool suspendable;
+		bool infinity;
 };
 
 

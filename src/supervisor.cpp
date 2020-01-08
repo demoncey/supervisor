@@ -55,12 +55,10 @@ void Supervisor::execute(){
 		if(current->suspended == false){
 			current->execute();
 			SERIAL_LOGGER(current->taskName,GET_HEX_PTR(current)," executed in chain");
-			if(current->execution == MODE_ONCE){
+			if(!current->infinity){
 				//inside deconstructor Task pointer is removed from List
 				SERIAL_LOGGER(current->taskName,GET_HEX_PTR(current)," will be deleted");
-				delete(current);
-				//if stack use method below instead delete
-				//deleteTask(*current);
+				delete(current);//if on stack will crash
 				killed++;
 			}
 		executed++;
@@ -78,7 +76,7 @@ void Supervisor::execute(){
 void Supervisor::suspendAll(){
 	Task *current = first;
 	while(current){
-		if(current->priority != P_HIGH && !(current->suspended)){
+		if(current->suspendable && !(current->suspended)){
 			current->suspend();
 		}
 		current = current->after;
