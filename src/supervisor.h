@@ -21,6 +21,7 @@ class Supervisor
 			return instance;
 		}
 		Supervisor(const Supervisor& supervisor) = delete;
+		void operator =(Supervisor const& supervisor)  = delete;
 		void addTask(Task& task);
 		void deleteTask(Task& task);
 		void execute();
