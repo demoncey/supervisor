@@ -7,8 +7,8 @@ Task::Task(String name,Callback callback):suspended(false),task_callback(callbac
 }
 
 Task::~Task(){
-	this->suspend();
-	this->task_callback = nullptr;
+	suspend();
+	task_callback = nullptr;
 	if(supervisor){
 		supervisor->deleteTask(*this);
 	}
