@@ -25,7 +25,28 @@ void Supervisor::addTask(Task& task){
 	task.setSupervisor(*this);
 	task.after=nullptr;
 	last = &task;
+	
+	if(task.priority = P_HIGH){
+		addQueue(task,hFirst,hLast);
+	}
+	if(task.priority = P_LOW){
+			addQueue(task,lFirst,lLast);
+	}	
 	SERIAL_LOGGER(task.taskName,GET_HEX_PTR(&task)," added");
+}
+
+void Supervisor::addQueue(Task& task,Task* last,Task* first){
+	if( first == nullptr){
+		SERIAL_LOGGER1("task first is null");
+		first=&task;
+		task.before = nullptr;
+	}else{
+		last->after = &task;
+		task.before = last;
+	}
+	task.setSupervisor(*this);
+	task.after=nullptr;
+	last = &task;
 }
 
 void Supervisor::deleteTask(Task& task){
@@ -40,8 +61,70 @@ void Supervisor::deleteTask(Task& task){
 		return;
 	}
 	task.before->after = task.after;
+	
+	
+	if(task.priority = P_HIGH){
+		deleteQueue(task,hFirst,hLast);
+	}
+	if(task.priority = P_LOW){
+		deleteQueue(task,lFirst,lLast);
+	}	
 	SERIAL_LOGGER(task.taskName,GET_HEX_PTR(&task)," removed");
 }
+
+
+void Supervisor::deleteQueue(Task& task,Task* last,Task* first){
+	if(&task == first){
+		first = task.after;
+		task.before = nullptr;
+		return;
+	}
+	if(&task == last){
+		last = task.before;
+		last->after = nullptr;
+		return;
+	}
+	task.before->after = task.after;
+}
+
+void Supervisor::executeAll(){
+	uint8_t index = 1;
+	Task *hCurrent = hFirst;
+	Task *lCurrent = lFirst;
+	
+	while(hCurrent != nullptr || lCurrent != nullptr ){
+		if(index%3 != 0 ){
+			SERIAL_LOGGER1("HIGH PRIORITY SLOT");
+			exec(hCurrent);
+		}else{
+			SERIAL_LOGGER1("LOW PRIORITY SLOT");
+			exec(lCurrent);	
+		}
+		index++;
+	}
+	SERIAL_LOGGER1("****************************");
+	SERIAL_LOGGER1("Cycle finished, reseting EXPERIMENTAL!!!!!!!!!!!!!!!");
+	SERIAL_LOGGER1("****************************");
+}
+
+
+void Supervisor::exec(Task* current){
+	if(current != nullptr){
+		if(current->suspended == false){
+			current->execute();
+			if(!current->infinity){
+				//inside deconstructor Task pointer is removed from List
+				SERIAL_LOGGER(current->taskName,GET_HEX_PTR(current)," will be deleted");
+				delete(current);//if on stack will crash
+			}	
+		}else{
+			SERIAL_LOGGER(current->taskName,GET_HEX_PTR(current)," is suspend");
+		}	
+		current = current->after;
+	}else{
+		SERIAL_LOGGER1("missed execution slot");
+	}	
+}	
 
 void Supervisor::execute(){
 	Task* current = first;
