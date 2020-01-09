@@ -20,7 +20,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Supervisor::getInstance().execute();
+  Supervisor::getInstance().executeAll();
   delay(2000);
 }
 
