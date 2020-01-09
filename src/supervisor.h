@@ -23,8 +23,8 @@ class Supervisor
 		Supervisor(const Supervisor& supervisor) = delete;
 		void operator =(Supervisor const& supervisor)  = delete;
 		void addTask(Task& task);
-		void addQueue(Task& task,Task* last,Task* first);
-		void deleteQueue(Task& task,Task* last,Task* first);
+		void addQueue(Task& task,Task*& last,Task*& first);
+		void deleteQueue(Task& task,Task*& last,Task*& first);
 		void deleteTask(Task& task);
 		void execute();
 		void executeAll();

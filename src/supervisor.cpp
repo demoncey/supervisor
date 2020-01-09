@@ -26,16 +26,16 @@ void Supervisor::addTask(Task& task){
 	task.after=nullptr;
 	last = &task;
 	
-	if(task.priority = P_HIGH){
+	if(task.priority == P_HIGH){
 		addQueue(task,hFirst,hLast);
 	}
-	if(task.priority = P_LOW){
+	if(task.priority == P_LOW){
 			addQueue(task,lFirst,lLast);
 	}	
 	SERIAL_LOGGER(task.taskName,GET_HEX_PTR(&task)," added");
 }
 
-void Supervisor::addQueue(Task& task,Task* last,Task* first){
+void Supervisor::addQueue(Task& task,Task*& last,Task*& first){
 	if( first == nullptr){
 		SERIAL_LOGGER1("task first is null");
 		first=&task;
@@ -63,17 +63,17 @@ void Supervisor::deleteTask(Task& task){
 	task.before->after = task.after;
 	
 	
-	if(task.priority = P_HIGH){
+	if(task.priority == P_HIGH){
 		deleteQueue(task,hFirst,hLast);
 	}
-	if(task.priority = P_LOW){
+	if(task.priority == P_LOW){
 		deleteQueue(task,lFirst,lLast);
 	}	
 	SERIAL_LOGGER(task.taskName,GET_HEX_PTR(&task)," removed");
 }
 
 
-void Supervisor::deleteQueue(Task& task,Task* last,Task* first){
+void Supervisor::deleteQueue(Task& task,Task*& last,Task*& first){
 	if(&task == first){
 		first = task.after;
 		task.before = nullptr;
@@ -91,7 +91,8 @@ void Supervisor::executeAll(){
 	uint8_t index = 1;
 	Task *hCurrent = hFirst;
 	Task *lCurrent = lFirst;
-	
+	SERIAL_LOGGER(hFirst->taskName,GET_HEX_PTR(hFirst)," SSSSSSSSSSSSSSSSSSSSSSSS");
+	SERIAL_LOGGER(lFirst->taskName,GET_HEX_PTR(lFirst)," SSSSSSSSSSSSSSSSSSSSSSSSS");
 	while(hCurrent != nullptr || lCurrent != nullptr ){
 		if(index%3 != 0 ){
 			SERIAL_LOGGER1("HIGH PRIORITY SLOT");
@@ -102,7 +103,8 @@ void Supervisor::executeAll(){
 		}
 		index++;
 	}
-	SERIAL_LOGGER1("****************************");
+	//SERIAL_LOGGER1(hFirst->taskName);
+	//SERIAL_LOGGER1(lFirst->taskName);
 	SERIAL_LOGGER1("Cycle finished, reseting EXPERIMENTAL!!!!!!!!!!!!!!!");
 	SERIAL_LOGGER1("****************************");
 }
