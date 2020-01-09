@@ -28,7 +28,7 @@ class Supervisor
 		void deleteTask(Task& task);
 		void execute();
 		void executeAll();
-		void exec(Task* current);
+		void exec(Task*& current);
 		void suspendAll();
 		void resumeAll();
 		//first argument always this hidden

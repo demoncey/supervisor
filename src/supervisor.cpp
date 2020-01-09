@@ -102,6 +102,7 @@ void Supervisor::executeAll(){
 			exec(lCurrent);	
 		}
 		index++;
+		delay(3000);
 	}
 	//SERIAL_LOGGER1(hFirst->taskName);
 	//SERIAL_LOGGER1(lFirst->taskName);
@@ -110,7 +111,7 @@ void Supervisor::executeAll(){
 }
 
 
-void Supervisor::exec(Task* current){
+void Supervisor::exec(Task*& current){
 	if(current != nullptr){
 		if(current->suspended == false){
 			current->execute();
